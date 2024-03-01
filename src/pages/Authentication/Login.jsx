@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
@@ -28,159 +27,132 @@ import {
 import { loginUser, socialLogin } from "../../store/actions";
 
 // import images
-import profile from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/logo.svg";
-import lightlogo from "../../assets/images/logo-light.svg";
+import CompanyBrand from "../../assets/images/LoginPageLogo.png";
 
 const Login = (props) => {
   //meta title
-  document.title = "Login | Skote - Vite React Admin & Dashboard Template";
+  document.title = "Login | phAMACore";
   const dispatch = useDispatch();
 
-  const validation = useFormik({
+  const formik = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@themesbrand.com" || "",
-      password: "123456" || "",
+      // email: "admin@themesbrand.com" || "",
+      // password: "123456" || "",
+      username: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
+      username: Yup.string().required("Please Enter Your username"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      dispatch(loginUser(values, props.router.navigate));
+      // dispatch(loginUser(values, props.router.navigate));
+      alert(JSON.stringify(values, null, 2));
     },
   });
 
   const LoginProperties = createSelector(
     (state) => state.Login,
     (login) => ({
-      error: login.error
+      error: login.error,
     })
   );
 
-  const {
-    error
-  } = useSelector(LoginProperties);
+  const { error } = useSelector(LoginProperties);
 
-  const signIn = type => {
+  const signIn = (type) => {
     dispatch(socialLogin(type, props.router.navigate));
   };
 
   //for facebook and google authentication
-  const socialResponse = type => {
+  const socialResponse = (type) => {
     signIn(type);
   };
 
   return (
     <React.Fragment>
-      <div className="home-btn d-none d-sm-block">
-        <Link to="/" className="text-dark">
-          <i className="bx bx-home h2" />
-        </Link>
-      </div>
       <div className="account-pages my-5 pt-sm-5">
         <Container>
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
-              <Card className="overflow-hidden">
-                <div className="bg-primary-subtle">
-                  <Row>
-                    <Col xs={7}>
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Skote.</p>
-                      </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
-                    </Col>
-                  </Row>
+              <Card className="overflow-hidden shadow-sm">
+                <div className="pt-3 pe-3 ps-3 text-center">
+                  <img
+                    src={CompanyBrand}
+                    alt=""
+                    className="img-fluid"
+                    width="150"
+                  />
+                  <p className="fw-semibold m-0 system_version">
+                    Version 2.0.0.2
+                  </p>{" "}
+                  <h5 className="mb-1">Welcome back!</h5>
+                  <p className="mb-0 text-secondary">
+                    Please enter your credentials to sign in!
+                  </p>
                 </div>
                 <CardBody className="pt-0">
-                  <div className="auth-logo">
-                    <Link to="/" className="auth-logo-light">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={lightlogo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
-                    <Link to="/" className="auth-logo-dark">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="p-2">
+                  <div className="auth-logo"></div>
+                  <div className="p-2 mt-3">
                     <Form
                       className="form-horizontal"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        validation.handleSubmit();
+                        formik.handleSubmit();
                         return false;
                       }}
                     >
                       {error ? <Alert color="danger">{error}</Alert> : null}
 
-                      <div className="mb-3">
-                        <Label className="form-label">Email</Label>
+                      <div className="mb-2">
+                        <Label className="form-label text-muted">
+                          Username
+                        </Label>
                         <Input
-                          name="email"
+                          name="username"
                           className="form-control"
-                          placeholder="Enter email"
-                          type="email"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
+                          placeholder="Enter Username"
+                          type="text"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.username}
                           invalid={
-                            validation.touched.email && validation.errors.email
+                            formik.touched.username && formik.errors.username
                               ? true
                               : false
                           }
                         />
-                        {validation.touched.email && validation.errors.email ? (
+                        {formik.touched.username && formik.errors.username ? (
                           <FormFeedback type="invalid">
-                            {validation.errors.email}
+                            {formik.errors.username}
                           </FormFeedback>
                         ) : null}
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Password</Label>
+                        <Label className="form-label text-muted">
+                          Password
+                        </Label>
                         <Input
                           name="password"
                           autoComplete="off"
-                          value={validation.values.password || ""}
+                          value={formik.values.password}
                           type="password"
                           placeholder="Enter Password"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           invalid={
-                            validation.touched.password &&
-                              validation.errors.password
+                            formik.touched.password && formik.errors.password
                               ? true
                               : false
                           }
                         />
-                        {validation.touched.password &&
-                          validation.errors.password ? (
+                        {formik.touched.password && formik.errors.password ? (
                           <FormFeedback type="invalid">
-                            {validation.errors.password}
+                            {formik.errors.password}
                           </FormFeedback>
                         ) : null}
                       </div>
@@ -209,58 +181,6 @@ const Login = (props) => {
                       </div>
 
                       <div className="mt-4 text-center">
-                        <h5 className="font-size-14 mb-3">Sign in with</h5>
-
-                        <ul className="list-inline">
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-primary text-white border-primary"
-                              onClick={e => {
-                                e.preventDefault();
-                                socialResponse("facebook");
-                              }}
-                            >
-                              <i className="mdi mdi-facebook" />
-                            </Link>
-                          </li>
-                          {/*<li className="list-inline-item">*/}
-                          {/*  <TwitterLogin*/}
-                          {/*    loginUrl={*/}
-                          {/*      "http://localhost:4000/api/v1/auth/twitter"*/}
-                          {/*    }*/}
-                          {/*    onSuccess={this.twitterResponse}*/}
-                          {/*    onFailure={this.onFailure}*/}
-                          {/*    requestTokenUrl={*/}
-                          {/*      "http://localhost:4000/api/v1/auth/twitter/revers"*/}
-                          {/*    }*/}
-                          {/*    showIcon={false}*/}
-                          {/*    tag={"div"}*/}
-                          {/*  >*/}
-                          {/*    <a*/}
-                          {/*      href=""*/}
-                          {/*      className="social-list-item bg-info text-white border-info"*/}
-                          {/*    >*/}
-                          {/*      <i className="mdi mdi-twitter"/>*/}
-                          {/*    </a>*/}
-                          {/*  </TwitterLogin>*/}
-                          {/*</li>*/}
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-danger text-white border-danger"
-                              onClick={e => {
-                                e.preventDefault();
-                                socialResponse("google");
-                              }}
-                            >
-                              <i className="mdi mdi-google" />
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
                           Forgot your password?
@@ -272,15 +192,9 @@ const Login = (props) => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  Don&#39;t have an account ?{" "}
-                  <Link to="/register" className="fw-medium text-primary">
-                    {" "}
-                    Signup now{" "}
-                  </Link>{" "}
-                </p>
-                <p>
-                  © {new Date().getFullYear()} Skote. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
+                  © {new Date().getFullYear()} phAMACore. Crafted with{" "}
+                  <i className="mdi mdi-heart text-danger" /> by CoreBase
+                  Solutions
                 </p>
               </div>
             </Col>
@@ -292,7 +206,3 @@ const Login = (props) => {
 };
 
 export default withRouter(Login);
-
-Login.propTypes = {
-  history: PropTypes.object,
-};
