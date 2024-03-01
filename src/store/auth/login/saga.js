@@ -19,26 +19,26 @@ function* loginUser({ payload: { user, history } }) {
     if (import.meta.env.VITE_APP_DEFAULTAUTH === "firebase") {
       const response = yield call(
         fireBaseBackend.loginUser,
-        user.email,
+        user.username,
         user.password
       );
       yield put(loginSuccess(response));
     } else if (import.meta.env.VITE_APP_DEFAULTAUTH === "jwt") {
       const response = yield call(postJwtLogin, {
-        email: user.email,
+        email: user.username,
         password: user.password,
       });
       localStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
     } else if (import.meta.env.VITE_APP_DEFAULTAUTH === "fake") {
       const response = yield call(postFakeLogin, {
-        email: user.email,
+        email: user.username,
         password: user.password,
       });
       localStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
     }
-    history('/dashboard');
+    history("/dashboard");
   } catch (error) {
     yield put(apiError(error));
   }
@@ -52,7 +52,7 @@ function* logoutUser({ payload: { history } }) {
       const response = yield call(fireBaseBackend.logout);
       yield put(logoutUserSuccess(response));
     }
-    history('/login');
+    history("/login");
   } catch (error) {
     yield put(apiError(error));
   }
@@ -70,8 +70,7 @@ function* socialLogin({ payload: { type, history } }) {
       }
       localStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
-      if(response)
-      history("/dashboard");
+      if (response) history("/dashboard");
     }
   } catch (error) {
     yield put(apiError(error));

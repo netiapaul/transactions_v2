@@ -117,7 +117,8 @@ const Header = (props) => {
               toggle={() => setMenu(!menu)}
             >
               <DropdownToggle className="btn header-item " caret tag="button">
-                {props.t("Mega Menu")} <i className="mdi mdi-chevron-down" />
+                {props.t("System Setups")}{" "}
+                <i className="mdi mdi-chevron-down" />
               </DropdownToggle>
               <DropdownMenu className="dropdown-megamenu">
                 <Row>

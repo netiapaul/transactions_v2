@@ -33,7 +33,7 @@ import {
   statisticsApplications,
   productData,
   cryptoOrderData,
-  mailDB
+  mailDB,
 } from "../../common/data";
 
 let users = [
@@ -62,6 +62,8 @@ const fakeBackend = () => {
 
   mock.onPost("/post-fake-login").reply((config) => {
     const user = JSON.parse(config["data"]);
+    console.log(user);
+    console.log(users);
     const validUser = users.filter(
       (usr) => usr.email === user.email && usr.password === user.password
     );
@@ -316,14 +318,14 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost(url.GET_SELECTED_MAILS).reply(selectedmails => {
+  mock.onPost(url.GET_SELECTED_MAILS).reply((selectedmails) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (selectedmails && selectedmails.data) {
           const params = JSON.parse(selectedmails.data);
-          const data = Object.keys(params).map(k => parseInt(params[k]));
+          const data = Object.keys(params).map((k) => parseInt(params[k]));
           // Passing fake JSON data as response
-          resolve([200, (data.length > 1) ? data : params[0]]);
+          resolve([200, data.length > 1 ? data : params[0]]);
         } else {
           reject([400, "Cannot add selected mails"]);
         }
@@ -331,17 +333,17 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost(url.SET_FOLDER_SELECTED_MAILS).reply(request => {
+  mock.onPost(url.SET_FOLDER_SELECTED_MAILS).reply((request) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (request && request.data) {
           const data = JSON.parse(request.data);
           const { selectedmails, folderId } = data;
-          mailDB.allmail = mailDB.allmail.map(mail => {
+          mailDB.allmail = mailDB.allmail.map((mail) => {
             if (selectedmails.includes(mail.id)) {
               return {
                 ...mail,
-                folder: parseInt(folderId)
+                folder: parseInt(folderId),
               };
             }
             return mail;
@@ -376,7 +378,7 @@ const fakeBackend = () => {
   //   });
   // });
 
-  mock.onDelete(url.DELETE_MAIL).reply(config => {
+  mock.onDelete(url.DELETE_MAIL).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -422,7 +424,7 @@ const fakeBackend = () => {
           // Passing fake JSON data as response
           const { params } = config;
           const email = mailDB.allmail.find(
-            mails => mails.id.toString() === params.id.toString()
+            (mails) => mails.id.toString() === params.id.toString()
           );
           resolve([200, email]);
         } else {
@@ -595,7 +597,7 @@ const fakeBackend = () => {
           // Passing fake JSON data as response
           const { params } = config;
           const filteredMessages = messages.filter(
-            msg => msg.roomId === params.roomId
+            (msg) => msg.roomId === params.roomId
           );
           resolve([200, filteredMessages]);
         } else {
@@ -618,18 +620,18 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onDelete(url.DELETE_MESSAGE).reply(config => {
+  mock.onDelete(url.DELETE_MESSAGE).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
           // Passing fake JSON data as response
-          resolve([200, config.headers.data])
+          resolve([200, config.headers.data]);
         } else {
-          reject([400, "Cannot delete event"])
+          reject([400, "Cannot delete event"]);
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
   mock.onGet(url.GET_ORDERS).reply(() => {
     return new Promise((resolve, reject) => {
@@ -951,44 +953,44 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost(url.ADD_CARD_DATA).reply(kanbanData => {
+  mock.onPost(url.ADD_CARD_DATA).reply((kanbanData) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (kanbanData && kanbanData.data) {
           // Passing fake JSON data as response
-          resolve([200, kanbanData.data])
+          resolve([200, kanbanData.data]);
         } else {
-          reject([400, "Cannot add Kanban Data"])
+          reject([400, "Cannot add Kanban Data"]);
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
-  mock.onPut(url.UPDATE_CARD_DATA).reply(kanbanData => {
+  mock.onPut(url.UPDATE_CARD_DATA).reply((kanbanData) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (kanbanData && kanbanData.data) {
           // Passing fake JSON data as response
-          resolve([200, kanbanData.data])
+          resolve([200, kanbanData.data]);
         } else {
-          reject([400, "Cannot update job List"])
+          reject([400, "Cannot update job List"]);
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
-  mock.onDelete(url.DELETE_KANBAN).reply(config => {
+  mock.onDelete(url.DELETE_KANBAN).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
           // Passing fake JSON data as response
-          resolve([200, config.headers.kanban])
+          resolve([200, config.headers.kanban]);
         } else {
-          reject([400, "Cannot delete kanban"])
+          reject([400, "Cannot delete kanban"]);
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
   mock.onGet(url.GET_USERS).reply(() => {
     return new Promise((resolve, reject) => {
@@ -1016,24 +1018,26 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onGet(new RegExp(`${url.GET_DASHBOARD_EMAILCHART}/*`)).reply((config) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const { param } = config;
-        if (dahsboardEmail) {
-          const filterChart = dahsboardEmail.filter((item) => {
-            return item.id === param;
-          });
+  mock
+    .onGet(new RegExp(`${url.GET_DASHBOARD_EMAILCHART}/*`))
+    .reply((config) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const { param } = config;
+          if (dahsboardEmail) {
+            const filterChart = dahsboardEmail.filter((item) => {
+              return item.id === param;
+            });
 
-          const data = filterChart.map((item) => item[param]);
-          // Passing fake JSON data as response
-          resolve([200, data[0]]);
-        } else {
-          reject([400, "Cannot get dashaboard"]);
-        }
+            const data = filterChart.map((item) => item[param]);
+            // Passing fake JSON data as response
+            resolve([200, data[0]]);
+          } else {
+            reject([400, "Cannot get dashaboard"]);
+          }
+        });
       });
     });
-  });
 
   mock.onGet(new RegExp(`${url.TOP_SELLING_DATA}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
@@ -1073,13 +1077,14 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onGet(new RegExp(`${url.GET_VISITOR_DATA}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.GET_VISITOR_DATA}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-
         const { params } = config;
         if (visitor) {
-          const filteredVisitors = visitor.filter((msg) => msg.id === params.roomId);
+          const filteredVisitors = visitor.filter(
+            (msg) => msg.id === params.roomId
+          );
           // Passing fake JSON data as response
           resolve([200, filteredVisitors]);
         } else {
@@ -1094,7 +1099,9 @@ const fakeBackend = () => {
       setTimeout(() => {
         const { params } = config;
         if (statisticsApplications) {
-          const filteredVisitors = statisticsApplications.filter((msg) => msg.id === params.roomId);
+          const filteredVisitors = statisticsApplications.filter(
+            (msg) => msg.id === params.roomId
+          );
           // Passing fake JSON data as response
           resolve([200, filteredVisitors]);
         } else {
@@ -1109,7 +1116,9 @@ const fakeBackend = () => {
       setTimeout(() => {
         if (walletOptions) {
           const { params } = config;
-          const filteredMessages = (walletOptions || []).filter((msg) => msg.id === params.roomId);
+          const filteredMessages = (walletOptions || []).filter(
+            (msg) => msg.id === params.roomId
+          );
 
           // Passing fake JSON data as response
           resolve([200, filteredMessages]);
@@ -1160,7 +1169,7 @@ const fakeBackend = () => {
               if (replyIdx > -1) {
                 if (
                   modifiedProductComments[commentIdx]["replies"][replyIdx][
-                  "hasLiked"
+                    "hasLiked"
                   ]
                 ) {
                   modifiedProductComments[commentIdx]["replies"][replyIdx][

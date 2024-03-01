@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 
 import { connect } from "react-redux";
@@ -35,7 +35,7 @@ import {
   changeSidebarType,
 } from "../../store/actions";
 
-const Header = props => {
+const Header = (props) => {
   const [search, setsearch] = useState(false);
   const [megaMenu, setmegaMenu] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
@@ -82,7 +82,6 @@ const Header = props => {
       <header id="page-topbar">
         <div className="navbar-header">
           <div className="d-flex">
-
             <div className="navbar-brand-box d-lg-none d-md-block">
               <Link to="/" className="logo logo-dark">
                 <span className="logo-sm">
@@ -108,17 +107,6 @@ const Header = props => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={props.t("Search") + "..."}
-                />
-                <span className="bx bx-search-alt" />
-              </div>
-            </form>
-
             <Dropdown
               className="dropdown-mega d-none d-lg-block ms-2"
               isOpen={megaMenu}
@@ -126,19 +114,16 @@ const Header = props => {
                 setmegaMenu(!megaMenu);
               }}
             >
-              <DropdownToggle
-                className="btn header-item "
-                caret
-                tag="button"
-              >
+              <DropdownToggle className="btn header-item " caret tag="button">
                 {" "}
-                {props.t("Mega Menu")} <i className="mdi mdi-chevron-down" />
+                {props.t("System Setups")}{" "}
+                <i className="mdi mdi-chevron-down" />
               </DropdownToggle>
               <DropdownMenu className="dropdown-megamenu">
                 <Row>
-                  <Col sm={8}>
+                  <Col sm={12}>
                     <Row>
-                      <Col md={4}>
+                      <Col>
                         <h5 className="font-size-14 mt-0">
                           {props.t("UI Components")}
                         </h5>
@@ -167,7 +152,7 @@ const Header = props => {
                         </ul>
                       </Col>
 
-                      <Col md={4}>
+                      <Col>
                         <h5 className="font-size-14 mt-0">
                           {props.t("Applications")}
                         </h5>
@@ -193,7 +178,7 @@ const Header = props => {
                         </ul>
                       </Col>
 
-                      <Col md={4}>
+                      <Col>
                         <h5 className="font-size-14 mt-0">
                           {props.t("Extra Pages")}
                         </h5>
@@ -221,47 +206,60 @@ const Header = props => {
                           </li>
                         </ul>
                       </Col>
-                    </Row>
-                  </Col>
-                  <Col sm={4}>
-                    <Row>
-                      <Col sm={6}>
+
+                      <Col>
                         <h5 className="font-size-14 mt-0">
-                          {props.t("UI Components")}
+                          {props.t("Applications")}
                         </h5>
                         <ul className="list-unstyled megamenu-list">
                           <li>
-                            <Link to="#">{props.t("Lightbox")}</Link>
+                            <Link to="#">{props.t("Ecommerce")}</Link>
                           </li>
                           <li>
-                            <Link to="#">{props.t("Range Slider")}</Link>
+                            <Link to="#">{props.t("Calendar")}</Link>
                           </li>
                           <li>
-                            <Link to="#">{props.t("Sweet Alert")}</Link>
+                            <Link to="#">{props.t("Email")}</Link>
                           </li>
                           <li>
-                            <Link to="#">{props.t("Rating")}</Link>
+                            <Link to="#">{props.t("Projects")}</Link>
                           </li>
                           <li>
-                            <Link to="#">{props.t("Forms")}</Link>
+                            <Link to="#">{props.t("Tasks")}</Link>
                           </li>
                           <li>
-                            <Link to="#">{props.t("Tables")}</Link>
-                          </li>
-                          <li>
-                            <Link to="#">{props.t("Charts")}</Link>
+                            <Link to="#">{props.t("Contacts")}</Link>
                           </li>
                         </ul>
                       </Col>
 
-                      <Col sm={5}>
-                        <div>
-                          <img
-                            src={megamenuImg}
-                            alt=""
-                            className="img-fluid mx-auto d-block"
-                          />
-                        </div>
+                      <Col>
+                        <h5 className="font-size-14 mt-0">
+                          {props.t("Extra Pages")}
+                        </h5>
+                        <ul className="list-unstyled megamenu-list">
+                          <li>
+                            <Link to="#">{props.t("Light Sidebar")}</Link>
+                          </li>
+                          <li>
+                            <Link to="#">{props.t("Compact Sidebar")}</Link>
+                          </li>
+                          <li>
+                            <Link to="#">{props.t("Horizontal layout")}</Link>
+                          </li>
+                          <li>
+                            <Link to="#"> {props.t("Maintenance")}</Link>
+                          </li>
+                          <li>
+                            <Link to="#">{props.t("Coming Soon")}</Link>
+                          </li>
+                          <li>
+                            <Link to="#">{props.t("Timeline")}</Link>
+                          </li>
+                          <li>
+                            <Link to="#">{props.t("FAQs")}</Link>
+                          </li>
+                        </ul>
                       </Col>
                     </Row>
                   </Col>
@@ -386,9 +384,9 @@ const Header = props => {
 
             <NotificationDropdown />
             <ProfileMenu />
-            
+
             <div
-               onClick={() => {
+              onClick={() => {
                 props.showRightSidebarAction(!props.showRightSidebar);
               }}
               className="dropdown d-inline-block"
@@ -414,16 +412,12 @@ Header.propTypes = {
   showRightSidebar: PropTypes.any,
   showRightSidebarAction: PropTypes.func,
   t: PropTypes.any,
-  toggleLeftmenu: PropTypes.func
+  toggleLeftmenu: PropTypes.func,
 };
 
-const mapStatetoProps = state => {
-  const {
-    layoutType,
-    showRightSidebar,
-    leftMenu,
-    leftSideBarType,
-  } = state.Layout;
+const mapStatetoProps = (state) => {
+  const { layoutType, showRightSidebar, leftMenu, leftSideBarType } =
+    state.Layout;
   return { layoutType, showRightSidebar, leftMenu, leftSideBarType };
 };
 

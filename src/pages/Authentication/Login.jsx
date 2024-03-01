@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
@@ -30,8 +30,10 @@ import { loginUser, socialLogin } from "../../store/actions";
 import CompanyBrand from "../../assets/images/LoginPageLogo.png";
 
 const Login = (props) => {
+  const [show, setShow] = useState(false);
+
   //meta title
-  document.title = "Login | phAMACore";
+  document.title = "Login | phAMACore Cloud";
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -41,16 +43,16 @@ const Login = (props) => {
     initialValues: {
       // email: "admin@themesbrand.com" || "",
       // password: "123456" || "",
-      username: "",
-      password: "",
+      username: "admin@themesbrand.com",
+      password: "123456",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your username"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      // dispatch(loginUser(values, props.router.navigate));
-      alert(JSON.stringify(values, null, 2));
+      dispatch(loginUser(values, props.router.navigate));
+      // alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -95,7 +97,6 @@ const Login = (props) => {
                   </p>
                 </div>
                 <CardBody className="pt-0">
-                  <div className="auth-logo"></div>
                   <div className="p-2 mt-3">
                     <Form
                       className="form-horizontal"
@@ -136,20 +137,35 @@ const Login = (props) => {
                         <Label className="form-label text-muted">
                           Password
                         </Label>
-                        <Input
-                          name="password"
-                          autoComplete="off"
-                          value={formik.values.password}
-                          type="password"
-                          placeholder="Enter Password"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          invalid={
-                            formik.touched.password && formik.errors.password
-                              ? true
-                              : false
-                          }
-                        />
+
+                        <div className="input-group auth-pass-inputgroup">
+                          <Input
+                            name="password"
+                            autoComplete="off"
+                            value={formik.values.password}
+                            type={show ? "text" : "password"}
+                            placeholder="Enter Password"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            invalid={
+                              formik.touched.password && formik.errors.password
+                                ? true
+                                : false
+                            }
+                          />
+                          <button
+                            onClick={() => setShow(!show)}
+                            className="btn btn-light "
+                            type="button"
+                            id="password-addon"
+                          >
+                            {show ? (
+                              <i className="mdi mdi-eye-off-outline"></i>
+                            ) : (
+                              <i className="mdi mdi-eye-outline"></i>
+                            )}
+                          </button>
+                        </div>
                         {formik.touched.password && formik.errors.password ? (
                           <FormFeedback type="invalid">
                             {formik.errors.password}

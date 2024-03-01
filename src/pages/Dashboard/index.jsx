@@ -46,25 +46,26 @@ import { createSelector } from "reselect";
 import LatestTranactions from "./LatestTranaction";
 
 const Dashboard = (props) => {
-
   const [modal, setmodal] = useState(false);
   const [subscribemodal, setSubscribemodal] = useState(false);
 
   const DashboardProperties = createSelector(
     (state) => state.Dashboard,
     (dashboard) => ({
-      chartsData: dashboard.chartsData
+      chartsData: dashboard.chartsData,
     })
   );
 
-  const {
-    chartsData
-  } = useSelector(DashboardProperties);
+  const { chartsData } = useSelector(DashboardProperties);
 
   const reports = [
     { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
     { title: "Revenue", iconClass: "bx-archive-in", description: "$35, 723" },
-    { title: "Average Price", iconClass: "bx-purchase-tag-alt", description: "$16.2" },
+    {
+      title: "Average Price",
+      iconClass: "bx-purchase-tag-alt",
+      description: "$16.2",
+    },
   ];
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const Dashboard = (props) => {
     setPeriodData(chartsData);
   }, [chartsData]);
 
-  const onChangeChartPeriod = pType => {
+  const onChangeChartPeriod = (pType) => {
     setPeriodType(pType);
     dispatch(onGetChartsData(pType));
   };
@@ -98,7 +99,10 @@ const Dashboard = (props) => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title={props.t("Dashboards")} breadcrumbItem={props.t("Dashboard")} />
+          <Breadcrumbs
+            title={props.t("Dashboards")}
+            breadcrumbItem={props.t("Dashboard")}
+          />
 
           <Row>
             <Col xl="4">
@@ -121,7 +125,11 @@ const Dashboard = (props) => {
                           </div>
                           <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span className="avatar-title rounded-circle bg-primary">
-                              <i className={"bx " + report.iconClass + " font-size-24"}></i>
+                              <i
+                                className={
+                                  "bx " + report.iconClass + " font-size-24"
+                                }
+                              ></i>
                             </span>
                           </div>
                         </div>
@@ -138,17 +146,47 @@ const Dashboard = (props) => {
                     <div className="ms-auto">
                       <ul className="nav nav-pills">
                         <li className="nav-item">
-                          <Link to="#" className={classNames({ active: periodType === "Week" }, "nav-link")} onClick={() => { onChangeChartPeriod("Week"); }} id="one_month">
+                          <Link
+                            to="#"
+                            className={classNames(
+                              { active: periodType === "Week" },
+                              "nav-link"
+                            )}
+                            onClick={() => {
+                              onChangeChartPeriod("Week");
+                            }}
+                            id="one_month"
+                          >
                             Week
                           </Link>{" "}
                         </li>
                         <li className="nav-item">
-                          <Link to="#" className={classNames({ active: periodType === "Month" }, "nav-link")} onClick={() => { onChangeChartPeriod("Month"); }} id="one_month">
+                          <Link
+                            to="#"
+                            className={classNames(
+                              { active: periodType === "Month" },
+                              "nav-link"
+                            )}
+                            onClick={() => {
+                              onChangeChartPeriod("Month");
+                            }}
+                            id="one_month"
+                          >
                             Month
                           </Link>
                         </li>
                         <li className="nav-item">
-                          <Link to="#" className={classNames({ active: periodType === "Year" }, "nav-link")} onClick={() => { onChangeChartPeriod("Year"); }} id="one_month">
+                          <Link
+                            to="#"
+                            className={classNames(
+                              { active: periodType === "Year" },
+                              "nav-link"
+                            )}
+                            onClick={() => {
+                              onChangeChartPeriod("Year");
+                            }}
+                            id="one_month"
+                          >
                             Year
                           </Link>
                         </li>
@@ -156,7 +194,10 @@ const Dashboard = (props) => {
                     </div>
                   </div>
                   {/* <div className="clearfix"></div> */}
-                  <StackedColumnChart periodData={periodData} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]' />
+                  <StackedColumnChart
+                    periodData={periodData}
+                    dataColors='["--bs-primary", "--bs-warning", "--bs-success"]'
+                  />
                 </CardBody>
               </Card>
             </Col>
