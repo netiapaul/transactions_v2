@@ -3,19 +3,24 @@ import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
-import { createSelector } from "reselect";
+// import { useSelector, useDispatch } from "react-redux";
+// import { createSelector } from "reselect";
 
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
+
+// Import Component
+import { ErrorAlert } from "../../components/Common/AlertFeedback";
+
+import { HandleLogin } from "../../common/services/SystemServices";
 
 import {
   Row,
   Col,
   CardBody,
   Card,
-  Alert,
+  // Alert,
   Container,
   Form,
   Input,
@@ -23,18 +28,72 @@ import {
   Label,
 } from "reactstrap";
 
-// actions
-import { loginUser, socialLogin } from "../../store/actions";
-
 // import images
 import CompanyBrand from "../../assets/images/LoginPageLogo.png";
 
 const Login = (props) => {
   const [show, setShow] = useState(false);
+  const [data, setData] = useState({
+    isLoading: false,
+    error: "",
+  });
 
   //meta title
   document.title = "Login | phAMACore Cloud";
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  async function HandleSubmit(data) {
+    setData((prevState) => ({
+      ...prevState,
+      isLoading: true,
+    }));
+    try {
+      const response = await HandleLogin(data);
+      setData((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        error: response?.message,
+      }));
+      if (response["user"].usergrouplist === "customerQuo") {
+        localStorage.setItem("customerQuoCode", response["user"].username);
+      } else if (response["user"].usergrouplist === "salesrepQuo") {
+        localStorage.setItem("salesrepQuoCode", response["user"].username);
+      }
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("usergrouplist", response["user"].usergrouplist);
+      localStorage.setItem("serverName", response["user"].serverName);
+      localStorage.setItem("userName", response["user"].username);
+      localStorage.setItem("companyName", response["user"].companyName);
+      localStorage.setItem("clientCode", response["user"].clientCode);
+      localStorage.setItem("companyDetailId", response["user"].companyDetailId);
+      localStorage.setItem("fullusername", response["user"].fullusername);
+      localStorage.setItem("cellnumber", response["user"].cellnumber);
+      localStorage.setItem("BASE_URL", response["user"].baseUrl);
+      // localStorage.setItem(
+      //   "branches",
+      //   JSON.stringify(response["user"].userBranches || userData.customBranch)
+      // );
+      localStorage.setItem(
+        "viewDashboard",
+        JSON.stringify(response["user"].viewDashboard)
+      );
+      localStorage.setItem("cusId", response["user"].cusId);
+      localStorage.setItem(
+        "userrights",
+        JSON.stringify(response["user"].userrights)
+      );
+      localStorage.setItem(
+        "userProfiles",
+        JSON.stringify(response["user"].userPROFILEGROUPS)
+      );
+    } catch (error) {
+      setData((prevState) => ({
+        ...prevState,
+        isLoading: false,
+        error: "Error",
+      }));
+    }
+  }
 
   const formik = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -43,36 +102,36 @@ const Login = (props) => {
     initialValues: {
       // email: "admin@themesbrand.com" || "",
       // password: "123456" || "",
-      username: "admin@themesbrand.com",
-      password: "123456",
+      username: "PaulDev",
+      password: "Tom12345",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your username"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      dispatch(loginUser(values, props.router.navigate));
+      const data = {
+        username: values?.username,
+        password: values?.password,
+        customBranch: "",
+        machineCookie: "",
+        latt: "",
+        long: "",
+      };
+      HandleSubmit(data);
+      // dispatch(loginUser(values, props.router.navigate));
       // alert(JSON.stringify(values, null, 2));
     },
   });
 
-  const LoginProperties = createSelector(
-    (state) => state.Login,
-    (login) => ({
-      error: login.error,
-    })
-  );
+  // const LoginProperties = createSelector(
+  //   (state) => state.Login,
+  //   (login) => ({
+  //     error: login.error,
+  //   })
+  // );
 
-  const { error } = useSelector(LoginProperties);
-
-  const signIn = (type) => {
-    dispatch(socialLogin(type, props.router.navigate));
-  };
-
-  //for facebook and google authentication
-  const socialResponse = (type) => {
-    signIn(type);
-  };
+  // const { error } = useSelector(LoginProperties);
 
   return (
     <React.Fragment>
@@ -106,7 +165,7 @@ const Login = (props) => {
                         return false;
                       }}
                     >
-                      {error ? <Alert color="danger">{error}</Alert> : null}
+                      {data?.error && <ErrorAlert error={data?.error} />}
 
                       <div className="mb-2">
                         <Label className="form-label text-muted">
@@ -191,6 +250,7 @@ const Login = (props) => {
                         <button
                           className="btn btn-primary btn-block"
                           type="submit"
+                          disabled={data?.isLoading}
                         >
                           Log In
                         </button>
