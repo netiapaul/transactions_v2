@@ -125,7 +125,8 @@ const Header = (props) => {
                     <Row>
                       <Col>
                         <h5 className="font-size-14 mt-0">
-                          {props.t("UI Components")}
+                          {/* {props.t("UI Components")} */}
+                          {props.t("System Setup")}
                         </h5>
                         <ul className="list-unstyled megamenu-list">
                           <li>
@@ -154,7 +155,8 @@ const Header = (props) => {
 
                       <Col>
                         <h5 className="font-size-14 mt-0">
-                          {props.t("Applications")}
+                          {/* {props.t("Applications")} */}
+                          {props.t("Customer Setup")}
                         </h5>
                         <ul className="list-unstyled megamenu-list">
                           <li>
@@ -180,7 +182,8 @@ const Header = (props) => {
 
                       <Col>
                         <h5 className="font-size-14 mt-0">
-                          {props.t("Extra Pages")}
+                          {/* {props.t("Extra Pages")} */}
+                          {props.t("Supplier Setup")}
                         </h5>
                         <ul className="list-unstyled megamenu-list">
                           <li>
@@ -209,7 +212,8 @@ const Header = (props) => {
 
                       <Col>
                         <h5 className="font-size-14 mt-0">
-                          {props.t("Applications")}
+                          {/* {props.t("Applications")} */}
+                          {props.t("Inventory Setup")}
                         </h5>
                         <ul className="list-unstyled megamenu-list">
                           <li>
@@ -235,7 +239,8 @@ const Header = (props) => {
 
                       <Col>
                         <h5 className="font-size-14 mt-0">
-                          {props.t("Extra Pages")}
+                          {/* {props.t("Extra Pages")} */}
+                          {props.t("GL Setup")}
                         </h5>
                         <ul className="list-unstyled megamenu-list">
                           <li>

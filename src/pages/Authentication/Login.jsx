@@ -248,11 +248,18 @@ const Login = (props) => {
 
                       <div className="mt-3 d-grid">
                         <button
-                          className="btn btn-primary btn-block"
+                          className="btn btn-primary btn-block submit_auth"
                           type="submit"
                           disabled={data?.isLoading}
                         >
-                          Log In
+                          {data?.isLoading ? (
+                            <>
+                              <i className="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>{" "}
+                              Loading
+                            </>
+                          ) : (
+                            "Log In"
+                          )}
                         </button>
                       </div>
 

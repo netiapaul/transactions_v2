@@ -144,6 +144,41 @@ const SidebarContent = (props) => {
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
+            {/* <li className="menu-title">{props.t("Menu")} </li> */}
+            <li>
+              <Link to="/#" className="has-arrow">
+                <i className="bx bx-home-circle"></i>
+                <span>{props.t("phAMACore Analysis")}</span>
+              </Link>
+              <ul className="sub-menu" aria-expanded="false">
+                <li>
+                  <Link to="/dashboard">{props.t("Sales Dashboard")}</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard-saas">{props.t("Profit Picture")}</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard-crypto">
+                    {props.t("Stock Analysis")}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blog">{props.t("Branch Analysis")}</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard-job">{props.t("Cashier Analysis")}</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard-job">
+                    {props.t("Daily Reconciliation")}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        {/* <div id="sidebar-menu">
+          <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
               <Link to="/#" className="has-arrow">
@@ -164,9 +199,7 @@ const SidebarContent = (props) => {
                   <Link to="/blog">{props.t("Blog")}</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard-job">
-                    {props.t("Job")}
-                  </Link>
+                  <Link to="/dashboard-job">{props.t("Job")}</Link>
                 </li>
               </ul>
             </li>
@@ -394,7 +427,6 @@ const SidebarContent = (props) => {
 
             <li>
               <Link to="/#">
-
                 <i className="bx bx-briefcase-alt"></i>
                 <span key="t-jobs">{props.t("Jobs")}</span>
               </Link>
@@ -423,7 +455,9 @@ const SidebarContent = (props) => {
                       <Link to="/candidate-list">{props.t("List")}</Link>
                     </li>
                     <li>
-                      <Link to="/candidate-overview">{props.t("Overview")}</Link>
+                      <Link to="/candidate-overview">
+                        {props.t("Overview")}
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -667,16 +701,6 @@ const SidebarContent = (props) => {
                 <li>
                   <Link to="/tables-datatable">{props.t("Data Tables")}</Link>
                 </li>
-                {/* <li>
-                  <Link to="/tables-responsive">
-                    {props.t("Responsive Table")}
-                  </Link>
-                </li> */}
-                {/* <li>
-                  <Link to="/tables-dragndrop">
-                    {props.t("Drag & Drop Table")}
-                  </Link>
-                </li> */}
               </ul>
             </li>
 
@@ -771,7 +795,7 @@ const SidebarContent = (props) => {
               </ul>
             </li>
           </ul>
-        </div>
+        </div> */}
       </SimpleBar>
     </React.Fragment>
   );
