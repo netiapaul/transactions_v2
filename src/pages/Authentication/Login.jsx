@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 //redux
@@ -37,6 +37,8 @@ const Login = (props) => {
     isLoading: false,
     error: "",
   });
+
+  const navigate = useNavigate();
 
   //meta title
   document.title = "Login | phAMACore Cloud";
@@ -86,6 +88,7 @@ const Login = (props) => {
         "userProfiles",
         JSON.stringify(response["user"].userPROFILEGROUPS)
       );
+      navigate("/dashboard");
     } catch (error) {
       setData((prevState) => ({
         ...prevState,
