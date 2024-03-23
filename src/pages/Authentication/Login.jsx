@@ -79,6 +79,7 @@ const Login = (props) => {
         "viewDashboard",
         JSON.stringify(response["user"].viewDashboard)
       );
+      localStorage.setItem("authUser", JSON.stringify(response["user"]));
       localStorage.setItem("cusId", response["user"].cusId);
       localStorage.setItem(
         "userrights",
